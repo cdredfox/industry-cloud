@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="${base}/">
+  <link href="element/element.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <div class="calendar-container">
+    <el-calendar v-model="currentDate">
+      <template slot="dateCell" slot-scope="{ date,data }">
+        <div class="date-cell">
+          <div class="calendar-day">
+            {{
+              data.day
+              .split('-')
+              .slice(2)
+              .join('-')
+            }}
+          </div>
+          <div v-for="(item, index) in formatSchedule(data)" :key="index" class="tradeDate">
+            <div>
+              <span class="info"> {{item.trackUser.name}}</span>
+              <span class="info">{{item.cost}}</span>
+              <span class="info  long_text">{{item.remark}}</span>
+            </div>
+          </div>
+        </div>
+
+      </template>
+    </el-calendar>
+  </div>
+  </template>
+</div>
+<style>
+  .app {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  .info {
+    font-size: 12px;
+  }
+
+  .long_text {
+    overflow: hidden; /**超出的文本隐藏**/
+    text-overflow: ellipsis; /**设置超长度部分显示省略号**/
+    display: -webkit-box; /**作为弹性伸缩盒子模型显示**/
+    -webkit-line-clamp: 2; /**设置最大显示两行**/
+    -webkit-box-orient: vertical; /**设置伸缩盒子的子元素排列方式--从上到下垂直排列**/
+  }
+
+</style>
+<script src="element/vue.min.js"></script>
+<script src="element/element.min.js"></script>
+<script src="element/axios.min.js"></script>
+<script src="common.js"></script>
+<script>
+  var vue = new Vue({
+    el: '#app',
+    data() {
+      return {
+        currentDate: new Date(), //日期控件显示的月份
+        trackDataList: [],
+      };
+    },
+    async created() {
+      this.$nextTick(() => {
+        // 点击上个月
+        let prevBtn = document.querySelector(
+            ".el-calendar__button-group .el-button-group>button:nth-child(1)"
+        );
+        prevBtn.addEventListener("click", async () => {
+          await this.handleSchedule();
+
+        });
+        // 点击今天
+        let currBtn = document.querySelector(
+            ".el-calendar__button-group .el-button-group>button:nth-child(2)"
+        );
+        currBtn.addEventListener("click", async () => {
+          await this.handleSchedule();
+        });
+        // 点击下个月
+        let nextBtn = document.querySelector(
+            ".el-calendar__button-group .el-button-group>button:nth-child(3)"
+        );
+        nextBtn.addEventListener("click", async () => {
+          await this.handleSchedule();
+        });
+      });
+      await this.handleSchedule();
+    },
+    mounted() {
+
+    },
+    methods: {
+      async handleSchedule() {
+        await axios.post('/deliveryTrack/list', {
+          calendarDate: dateFormat(this.currentDate)
+        })
+        .then(response => {
+          this.trackDataList = response.data.data;
+          this.$forceUpdate();
+          console.log("1111" + this.trackDataList[0].trackDate);
+        })
+      },
+      formatSchedule(data) {
+        return this.trackDataList.filter(ele => {
+          console.log(data)
+          console.log(ele.trackDate)
+          let time = ele.trackDate;
+          if (time == data.day) {
+            return ele;
+          }
+        });
+      }
+    },
+  });
+</script>
+</body>
+</html>
