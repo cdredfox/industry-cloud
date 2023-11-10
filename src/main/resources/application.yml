@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://10.2.13.141:3306/ic?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: jh_dev
+    password: 7F0OSTuFuCzEGWp0lgsGWN
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    database: mysql
