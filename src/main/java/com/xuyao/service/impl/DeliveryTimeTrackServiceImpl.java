@@ -5,7 +5,7 @@ package com.xuyao.service.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import com.xuyao.DeliveryTimeTrackJpaRepository;
+import com.xuyao.repository.DeliveryTimeTrackJpaRepository;
 import com.xuyao.api.req.QryDeliveryTimeTrackRequest;
 import com.xuyao.entity.DeliveryTimeTrack;
 import com.xuyao.service.DeliveryTimeTrackService;

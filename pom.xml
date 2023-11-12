@@ -9,12 +9,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
-    <groupId>com.example</groupId>
-    <artifactId>erupt-example</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>Demo project for Spring Boot</description>
+    <groupId>com.xuyao</groupId>
+    <artifactId>industry-cloud</artifactId>
+    <version>0.0.1</version>
+    <description>industry cloud</description>
 
     <properties>
         <java.version>1.8</java.version>

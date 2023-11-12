@@ -1,7 +1,7 @@
 /*
  * Copyright 2021-2023 www.jiahui.com
  */
-package com.xuyao;
+package com.xuyao.repository;
 
 import com.xuyao.entity.DeliveryTimeTrack;
 import java.util.Date;
