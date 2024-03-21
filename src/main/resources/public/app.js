@@ -8,7 +8,8 @@ window.eruptSiteConfig = {
   //描述
   desc: "业务管理系统",
   //是否展示版权信息
-  copyright: false,
+  copyright: true,
+  copyrightTxt: "2022-2023 轻造云 All rights reserved.",
   //高德地图 api key,使用地图组件须指定此属性，amapKey获取地址：https://lbs.amap.com (服务平台为：Web端(JS API))
   amapKey: "xxxx",
   //高德地图 SecurityJsCode

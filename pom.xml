@@ -18,7 +18,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <erupt.version>1.12.5</erupt.version>
+        <erupt.version>1.12.8</erupt.version>
         <hutool.version>5.8.0</hutool.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <mybatis-plus-join.version>1.2.1</mybatis-plus-join.version>
@@ -85,8 +85,6 @@
         </dependency>
 
         <!-- ****** 以下模块不需要可以去掉 ****** -->
-
-
         <!--自定义页面模块-->
         <dependency>
             <groupId>xyz.erupt</groupId>
@@ -110,6 +108,18 @@
             <groupId>xyz.erupt</groupId>
             <artifactId>erupt-tpl-ui.element-ui</artifactId>
             <version>${erupt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.erupt</groupId>
+            <artifactId>erupt-flow</artifactId>
+            <version>${erupt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-channel</artifactId>
+            <version>4.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
