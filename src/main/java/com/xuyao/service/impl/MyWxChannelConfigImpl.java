@@ -3,7 +3,7 @@
  */
 package com.xuyao.service.impl;
 
-import com.xuyao.config.WxChannelProperties;
+import com.xuyao.config.WxConfigProperties;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.channel.config.WxChannelConfig;
 import me.chanjar.weixin.channel.config.impl.WxChannelRedisConfigImpl;
@@ -18,15 +18,15 @@ import org.springframework.stereotype.Service;
 @Service("wxChannelConfig")
 @Slf4j
 public class MyWxChannelConfigImpl extends WxChannelRedisConfigImpl implements WxChannelConfig {
-    private final WxChannelProperties properties;
-    public MyWxChannelConfigImpl(WxRedisOps wxRedisOps, WxChannelProperties properties) {
+    private final WxConfigProperties properties;
+    public MyWxChannelConfigImpl(WxRedisOps wxRedisOps, WxConfigProperties properties) {
         super(wxRedisOps, "wx:channel:");
         log.info("MyWxChannelConfigImpl loading...");
         this.properties = properties;
         this.config(properties);
     }
 
-    protected void config(WxChannelProperties properties) {
+    protected void config(WxConfigProperties properties) {
         this.setAppid(StringUtils.trimToNull(properties.getAppid()));
         this.setSecret(StringUtils.trimToNull(properties.getSecret()));
         this.setToken(StringUtils.trimToNull(properties.getToken()));

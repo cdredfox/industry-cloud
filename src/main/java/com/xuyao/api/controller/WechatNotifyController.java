@@ -5,6 +5,7 @@ package com.xuyao.api.controller;
 
 import com.xuyao.service.ChannelMessageService;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/wx/notify/{appid}")
 public class WechatNotifyController {
+
     @Autowired
-    protected ChannelMessageService channelMessageService;
+    private WxMpService wxMpService;
 
     /**
      * 接收微信服务器的认证消息
@@ -42,7 +44,7 @@ public class WechatNotifyController {
             throw new IllegalArgumentException("请求参数非法，请核实!");
         }
 
-        if (channelMessageService.checkSignature(timestamp, nonce, signature)) {
+        if (wxMpService.checkSignature(timestamp, nonce, signature)) {
             return echostr;
         }
         return "非法请求";
@@ -71,7 +73,7 @@ public class WechatNotifyController {
         log.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," +
                         " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
                 msgSignature, encryptType, signature, timestamp, nonce, requestBody);
-        return channelMessageService.processMessage(requestBody, msgSignature, encryptType, signature,
+        return wxMpService.processMessage(requestBody, msgSignature, encryptType, signature,
                 timestamp, nonce);
     }
 }

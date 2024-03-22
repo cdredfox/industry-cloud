@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = WxChannelProperties.PREFIX)
-public class WxChannelProperties {
-    public static final String PREFIX = "wx.channel";
+@ConfigurationProperties(prefix = WxConfigProperties.PREFIX)
+public class WxConfigProperties {
+    public static final String PREFIX = "wx";
 
     /**
      * 设置视频号小店的appid
