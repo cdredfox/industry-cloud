@@ -3,12 +3,20 @@
  */
 package com.xuyao.api.controller;
 
-import com.xuyao.service.ChannelMessageService;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author yangfei
@@ -21,6 +29,8 @@ public class WechatNotifyController {
 
     @Autowired
     private WxMpService wxMpService;
+    @Autowired
+    private WxMpMessageRouter wxMpMessageRouter;
 
     /**
      * 接收微信服务器的认证消息
@@ -33,13 +43,10 @@ public class WechatNotifyController {
      * @return echostr
      */
     @GetMapping(produces = "text/plain;charset=utf-8")
-    public String authGet(@PathVariable String appid,
-                          @RequestParam(name = "signature", required = false) String signature,
-                          @RequestParam(name = "timestamp", required = false) String timestamp,
-                          @RequestParam(name = "nonce", required = false) String nonce,
-                          @RequestParam(name = "echostr", required = false) String echostr) {
-        log.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]",
-                signature, timestamp, nonce, echostr);
+    public String authGet(@PathVariable String appid, @RequestParam(name = "signature", required = false) String signature,
+        @RequestParam(name = "timestamp", required = false) String timestamp, @RequestParam(name = "nonce", required = false) String nonce,
+        @RequestParam(name = "echostr", required = false) String echostr) {
+        log.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]", signature, timestamp, nonce, echostr);
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
             throw new IllegalArgumentException("请求参数非法，请核实!");
         }
@@ -63,17 +70,19 @@ public class WechatNotifyController {
      * @return String
      */
     @PostMapping(produces = "application/xml; charset=UTF-8")
-    public String post(@PathVariable String appid,
-                       @RequestBody String requestBody,
-                       @RequestParam(name = "msg_signature", required = false) String msgSignature,
-                       @RequestParam(name = "encrypt_type", required = false) String encryptType,
-                       @RequestParam(name = "signature", required = false) String signature,
-                       @RequestParam("timestamp") String timestamp,
-                       @RequestParam("nonce") String nonce) {
-        log.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," +
-                        " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
-                msgSignature, encryptType, signature, timestamp, nonce, requestBody);
-        return wxMpService.processMessage(requestBody, msgSignature, encryptType, signature,
-                timestamp, nonce);
+    public String post(@PathVariable String appid, @RequestBody String requestBody, @RequestParam(name = "msg_signature", required = false) String msgSignature,
+        @RequestParam(name = "encrypt_type", required = false) String encryptType, @RequestParam(name = "signature", required = false) String signature,
+        @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce) {
+        log.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ", msgSignature,
+            encryptType, signature, timestamp, nonce, requestBody);
+        if (!wxMpService.checkSignature(timestamp, nonce, signature)) {
+            throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
+        }
+        WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+        WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
+        if (outMessage == null) {
+            return "";
+        }
+        return outMessage.toXml();
     }
 }
