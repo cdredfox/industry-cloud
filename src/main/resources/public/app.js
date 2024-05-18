@@ -4,12 +4,12 @@ window.eruptSiteConfig = {
   //附件地址，一般情况下不需要指定，如果自定义对象存储空间，则需在此指定附件资源访问地址
   fileDomain: "",
   //标题
-  title: "轻造云",
+  title: "谜云科技",
   //描述
   desc: "业务管理系统",
   //是否展示版权信息
   copyright: true,
-  copyrightTxt: "2022-2023 轻造云 All rights reserved.",
+  copyrightTxt: "2022-2023 谜云科技 All rights reserved.",
   //高德地图 api key,使用地图组件须指定此属性，amapKey获取地址：https://lbs.amap.com (服务平台为：Web端(JS API))
   amapKey: "xxxx",
   //高德地图 SecurityJsCode
