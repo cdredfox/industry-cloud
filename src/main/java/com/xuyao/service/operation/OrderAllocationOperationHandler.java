@@ -14,6 +14,8 @@ import xyz.erupt.annotation.fun.OperationHandler;
 import xyz.erupt.jpa.dao.EruptDao;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,8 @@ public class OrderAllocationOperationHandler implements OperationHandler<TmsOrde
             data.forEach(tmsOrder -> {
                 tmsOrder.setOrderStatus("2");
                 CommissionConfig commissionConfig = eruptDao.findById(CommissionConfig.class, allocationInfo.getCommissionConfig().getId());
-                tmsOrder.setCommissionAmount(tmsOrder.getReceivedAmount()*(commissionConfig.getRate()/100));
+                BigDecimal b = BigDecimal.valueOf(tmsOrder.getReceivedAmount() * (commissionConfig.getRate() / 100));
+                tmsOrder.setCommissionAmount(b.setScale(2, RoundingMode.HALF_UP).doubleValue());
                 tmsOrder.setCommissionConfig(allocationInfo.getCommissionConfig());
                 eruptDao.merge(tmsOrder);
                 //创建任务单

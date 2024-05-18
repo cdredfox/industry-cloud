@@ -25,8 +25,8 @@ import javax.persistence.Table;
 @Data
 public class CommissionConfig extends BaseModel {
 
-    @EruptField(views = @View(title = "模式名称"), edit = @Edit(title = "模式名称" ))
+    @EruptField(views = @View(title = "模式名称"), edit = @Edit(title = "模式名称",notNull = true ))
     private String name;
-    @EruptField(views = @View(title = "佣金比例(%)"), edit = @Edit(title = "佣金比例(%)" ))
+    @EruptField(views = @View(title = "佣金比例(%)"), edit = @Edit(title = "佣金比例(%)" ,notNull = true))
     private double rate;
 }

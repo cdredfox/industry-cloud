@@ -21,7 +21,9 @@ import xyz.erupt.upms.model.EruptUser;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangfei
@@ -55,4 +57,7 @@ public class PaymentOrder extends BaseModel {
     private String paymentStatus;
     @EruptField(views = @View(title = "付款时间"), edit = @Edit(title = "付款时间"))
     private Date paymentTime;
+
+    @Transient
+    private List<TaskOrder> taskOrderList;
 }

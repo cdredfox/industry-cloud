@@ -62,4 +62,9 @@ public class TaskOrder extends BaseModel {
     @EruptField(views = @View(title = "任务金额"), edit = @Edit(title = "任务金额"))
     private Double taskAmount;
 
+    @ManyToOne()
+    @TableField("tms_payment_order_id")
+    @EruptField(views = {@View(title = "打款单编号", column = "id")}, edit = @Edit(title = "打款单编号", type = EditType.REFERENCE_TREE, search = @Search))
+    private PaymentOrder paymentOrder;
+
 }

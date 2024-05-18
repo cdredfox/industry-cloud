@@ -13,6 +13,7 @@ import xyz.erupt.upms.model.EruptUser;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,20 +42,26 @@ public class OrderSettleOperationHandler implements OperationHandler<TmsOrder, V
             eruptDao.merge(tmsOrder);
             TaskOrder taskOrder = eruptDao.lambdaQuery(TaskOrder.class).eq(TaskOrder::getTmsOrder, tmsOrder).one();
             taskOrder.setOrderStatus("4");
-            eruptDao.merge(taskOrder);
+
             PaymentOrder paymentOrder=paymentList.get(taskOrder.getServiceUser());
             if(paymentOrder==null){
                 paymentOrder=new PaymentOrder();
                 paymentOrder.setPaymentAmount(0d);
                 paymentOrder.setPaymentStatus("1");
                 paymentOrder.setServiceUser(taskOrder.getServiceUser());
+                paymentOrder.setTaskOrderList(new ArrayList<>());
                 paymentList.put(taskOrder.getServiceUser(),paymentOrder);
             }
             paymentOrder.setPaymentAmount(paymentOrder.getPaymentAmount()+ taskOrder.getTaskAmount());
+            paymentOrder.getTaskOrderList().add(taskOrder);
         });
 
         paymentList.forEach((key,value)->{
             eruptDao.persist(value);
+            value.getTaskOrderList().forEach(taskOrder -> {
+                taskOrder.setPaymentOrder(value);
+                eruptDao.merge(taskOrder);
+            });
         });
 
         return "msg.success('订单结算成功')";

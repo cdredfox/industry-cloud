@@ -59,19 +59,19 @@ public class TmsOrder extends BaseModel {
 
     @ManyToOne()
     @TableField("commission_config_id")
-    @EruptField(views = {@View(title = "模式", column = "name")}, edit = @Edit(title = "模式", type = EditType.REFERENCE_TREE, search = @Search))
+    @EruptField(views = {@View(title = "模式", column = "name")}, edit = @Edit(title = "模式", show = false,type = EditType.REFERENCE_TREE, search = @Search))
     private CommissionConfig commissionConfig;
     @EruptField(views = @View(title = "订单编号"), edit = @Edit(title = "订单编号",notNull = true,search = @Search(vague = true)  ))
     private String orderNo;
     @EruptField(views = @View(title = "订单标题"), edit = @Edit(title = "订单标题",notNull = true,search = @Search(vague = true)  ))
     private String orderTitle;
-    @EruptField(views = @View(title = "订单总金额"), edit = @Edit(title = "订单总金额",numberType = @NumberType))
+    @EruptField(views = @View(title = "订单总金额"), edit = @Edit(title = "订单总金额",notNull = true,numberType = @NumberType))
     private Double orderAmount;
-    @EruptField(views = @View(title = "买家实付金额"), edit = @Edit(title = "买家实付金额",numberType = @NumberType))
+    @EruptField(views = @View(title = "买家实付金额"), edit = @Edit(title = "买家实付金额",notNull = true,numberType = @NumberType))
     private Double paidAmount;
-    @EruptField(views = @View(title = "商家实收金额"), edit = @Edit(title = "商家实收金额",numberType = @NumberType))
+    @EruptField(views = @View(title = "商家实收金额"), edit = @Edit(title = "商家实收金额",notNull = true,numberType = @NumberType))
     private Double receivedAmount;
-    @EruptField(views = @View(title = "分成金额"), edit = @Edit(title = "分成金额",numberType = @NumberType))
+    @EruptField(views = @View(title = "分成金额"), edit = @Edit(show = false,title = "分成金额",numberType = @NumberType))
     private Double commissionAmount;
     @EruptField(views = @View(title = "订单备注"), edit = @Edit(title = "订单备注"))
     private String orderMemo;
@@ -80,13 +80,14 @@ public class TmsOrder extends BaseModel {
             edit = @Edit(
                     title = "订单状态",
                     notNull = true,
+                    show = false,
                     type = EditType.CHOICE,
                     choiceType = @ChoiceType(
                             fetchHandler = DictCodeChoiceFetchHandler.class,
                             fetchHandlerParams = {"tms.order.orderStatus", "5000"}
                     ),search = @Search(vague = true))
     )
-    private String orderStatus;
+    private String orderStatus="1";
     @EruptField(views = @View(title = "订单付款时间"), edit = @Edit(title = "订单付款时间",search = @Search(vague = true)))
     private Date paymentTime;
     @EruptField(views = @View(title = "确认收货时间"), edit = @Edit(title = "确认收货时间",search = @Search(vague = true)))
