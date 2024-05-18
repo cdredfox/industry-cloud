@@ -50,7 +50,7 @@ public class WechatNotifyController {
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
             throw new IllegalArgumentException("请求参数非法，请核实!");
         }
-
+        wxMpService.switchover(appid);
         if (wxMpService.checkSignature(timestamp, nonce, signature)) {
             return echostr;
         }
@@ -75,14 +75,25 @@ public class WechatNotifyController {
         @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce) {
         log.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ", msgSignature,
             encryptType, signature, timestamp, nonce, requestBody);
+        wxMpService.switchover(appid);
         if (!wxMpService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
-        WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+        WxMpXmlMessage inMessage = null;
+        boolean isAES=false;
+        if(StringUtils.isBlank(encryptType)){
+            inMessage = WxMpXmlMessage.fromXml(requestBody);
+        }
+        else if("aes".equals(encryptType)){
+            inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxMpService.getWxMpConfigStorage(), timestamp, nonce, msgSignature);
+            isAES=true;
+        }
+
         WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
         if (outMessage == null) {
             return "";
         }
-        return outMessage.toXml();
+
+        return isAES? outMessage.toEncryptedXml(wxMpService.getWxMpConfigStorage()):outMessage.toXml();
     }
 }

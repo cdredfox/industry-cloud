@@ -49,6 +49,9 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:192.168.123.222}:3306/ic?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PWD:snnuiabc}
+    #url: jdbc:mysql://${MYSQL_HOST:gateway01.ap-northeast-1.prod.aws.tidbcloud.com}:4000/ic?sslMode=VERIFY_IDENTITY&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    #username: ${MYSQL_USER:2Pni9jNeHoQ8reh.root}
+    #password: ${MYSQL_PWD:vyQSx94I6o6xAO4x}
   jpa:
     show-sql: true
     generate-ddl: true
@@ -63,4 +66,11 @@ wx:
     secret: "a3f018a5117a92a06bd175957ddb191f"
     token: "abcdefg1234567890"
     aesKey: "qp17qGwMPTLNSqqfFqeYN1MrDt5MEB3kgOkp5hhQRcM"
+    certification: ${WX_CERTIFICATION:false}
+oapi:
+  api-secret-key: 8164c9cf32282681c691d1c766f47c97.DspJVDBivno5cRgJ
 
+openai:
+  api-secret-key: sk-pNjKFFGWHdNJQdZq5d617bFaF7094a43A82a229b8511EeAc
+  base-url: https://api.qingzaoyun.com/
+  timeout: 30

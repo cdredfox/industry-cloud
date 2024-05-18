@@ -18,12 +18,14 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <erupt.version>1.12.8</erupt.version>
+        <erupt.version>1.12.12</erupt.version>
         <hutool.version>5.8.0</hutool.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <mybatis-plus-join.version>1.2.1</mybatis-plus-join.version>
         <pagehelper.version>1.4.6</pagehelper.version>
         <wx-java.version>4.6.0</wx-java.version>
+        <oapi-java-sdk.version>release-V4-2.0.1</oapi-java-sdk.version>
+        <openai-service.vesrion>0.18.2</openai-service.vesrion>
     </properties>
 
 
@@ -92,18 +94,6 @@
             <artifactId>erupt-tpl</artifactId>
             <version>${erupt.version}</version>
         </dependency>
-        <!--代码生成器模块-->
-        <dependency>
-            <groupId>xyz.erupt</groupId>
-            <artifactId>erupt-generator</artifactId>
-            <version>${erupt.version}</version>
-        </dependency>
-        <!--服务监控模块-->
-        <dependency>
-            <groupId>xyz.erupt</groupId>
-            <artifactId>erupt-monitor</artifactId>
-            <version>${erupt.version}</version>
-        </dependency>
         <!--element-ui-->
         <dependency>
             <groupId>xyz.erupt</groupId>
@@ -122,6 +112,19 @@
             <artifactId>wx-java-mp-spring-boot-starter</artifactId>
             <version>${wx-java.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.bigmodel.openapi</groupId>
+            <artifactId>oapi-java-sdk</artifactId>
+            <version>${oapi-java-sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <artifactId>service</artifactId>
+            <version>${openai-service.vesrion}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

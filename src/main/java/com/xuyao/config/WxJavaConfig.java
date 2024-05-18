@@ -7,11 +7,13 @@ import com.xuyao.service.wx.MyMessageDuplicateChecker;
 import com.xuyao.service.wx.handler.SubscribeHandler;
 import com.xuyao.service.wx.handler.UnSubscribeHandler;
 import com.xuyao.service.wx.handler.WxMpTextMessageHandler;
+import lombok.Data;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.api.WxConsts.EventType;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +22,11 @@ import org.springframework.context.annotation.Configuration;
  * @date 2024/3/22 - 10:21
  */
 @Configuration
+@Data
 public class WxJavaConfig {
 
+    @Value("${wx.mp.certification:false}")
+    private boolean certification=false;
     @Autowired
     private WxMpService wxMpService;
 
